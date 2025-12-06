@@ -216,8 +216,8 @@ body::before {
 /* ===== GAME BOARD ===== */
 .gameboard {
   flex: 1;
-  min-width: 400px;
-  max-width: 700px;
+  min-width: 500px;
+  max-width: 900px;
   aspect-ratio: 16 / 12;
   border: 2px solid var(--border-glow);
   border-radius: var(--radius-lg);
