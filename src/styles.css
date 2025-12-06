@@ -271,9 +271,11 @@ body::before {
 }
 
 .game-cell.transparent {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
+  background: var(--bg-primary) !important;
+  background-image: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  opacity: 0;
 }
 
 .game-cell.red {
