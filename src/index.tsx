@@ -11,6 +11,7 @@ interface AppState {
   selectedBoard: number,
   dragging: boolean,
   completedLevels: Set<number>,
+  lightTheme: boolean,
 }
 
 
@@ -21,12 +22,34 @@ class App extends Component<{}, AppState> {
     super(props);
     // Initial state
     const completedLevels = new Set<number>(JSON.parse(localStorage.getItem('completedLevels') || '[]'));
+    const savedTheme = localStorage.getItem('lightTheme') === 'true';
     this.state = {
       selectedBoard: this.getSelectedBoardFromUrl() || 285,
       dragging: null,
       completedLevels: completedLevels,
+      lightTheme: savedTheme,
     };
   }
+
+  componentDidMount() {
+    // Apply saved theme on mount
+    if (this.state.lightTheme) {
+      document.body.classList.add('light-theme');
+    }
+  }
+
+  toggleTheme = () => {
+    this.setState(prevState => {
+      const newTheme = !prevState.lightTheme;
+      localStorage.setItem('lightTheme', String(newTheme));
+      if (newTheme) {
+        document.body.classList.add('light-theme');
+      } else {
+        document.body.classList.remove('light-theme');
+      }
+      return { lightTheme: newTheme };
+    });
+  };
 
   getSelectedBoardFromUrl(): number {
     const searchParams = new URLSearchParams(window.location.search);
@@ -58,9 +81,16 @@ class App extends Component<{}, AppState> {
   }
 
   render() {
-    const { dragging, selectedBoard, completedLevels } = this.state;
+    const { dragging, selectedBoard, completedLevels, lightTheme } = this.state;
     return (
       <div className={`App ${dragging ? "dragging" : ""}`}>
+        <button 
+          className="theme-toggle" 
+          onClick={this.toggleTheme}
+          title={lightTheme ? "Switch to dark theme" : "Switch to light theme"}
+        >
+          {lightTheme ? "🌙" : "☀️"}
+        </button>
         <GitHubForkRibbon
           href="//github.com/alexanderson1993/robozzle-react"
           target="_blank"

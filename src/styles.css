@@ -30,6 +30,107 @@
   --radius-md: 10px;
   --radius-lg: 16px;
   --glow-strength: 0 0 20px;
+  
+  --star-opacity: 1;
+}
+
+/* ===== LIGHT THEME ===== */
+.light-theme {
+  --bg-primary: #e8eef6;
+  --bg-secondary: #f5f7fa;
+  --bg-tertiary: #ffffff;
+  --bg-panel: rgba(255, 255, 255, 0.92);
+  --bg-glass: rgba(255, 255, 255, 0.75);
+  
+  --accent-cyan: #0095a8;
+  --accent-magenta: #c4007a;
+  --accent-gold: #d49500;
+  --accent-green: #00a858;
+  
+  --text-primary: #1a2a3a;
+  --text-secondary: #4a5a6a;
+  --text-muted: #8a9aaa;
+  
+  --border-glow: rgba(0, 149, 168, 0.4);
+  --border-subtle: rgba(0, 50, 100, 0.12);
+  
+  --cell-red: hsla(0, 65%, 55%, 1);
+  --cell-blue: hsla(210, 65%, 55%, 1);
+  --cell-green: hsla(145, 60%, 45%, 1);
+  
+  --glow-strength: 0 0 15px;
+  --star-opacity: 0;
+}
+
+/* Light theme - invert the SVG icons to make them visible */
+.light-theme .function-holder img {
+  filter: invert(1);
+}
+
+.light-theme .command.forward,
+.light-theme .command.left,
+.light-theme .command.right,
+.light-theme .command.f0,
+.light-theme .command.f1,
+.light-theme .command.f2,
+.light-theme .command.f3,
+.light-theme .command.f4,
+.light-theme .command.f5 {
+  /* background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%); */
+  position: relative;
+}
+
+.light-theme .command.forward::before,
+.light-theme .command.left::before,
+.light-theme .command.right::before,
+.light-theme .command.f0::before,
+.light-theme .command.f1::before,
+.light-theme .command.f2::before,
+.light-theme .command.f3::before,
+.light-theme .command.f4::before,
+.light-theme .command.f5::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: invert(1);
+  pointer-events: none;
+}
+
+.light-theme .command.forward::before { background-image: url("./img/forward.svg"); }
+.light-theme .command.left::before { background-image: url("./img/left.svg"); }
+.light-theme .command.right::before { background-image: url("./img/right.svg"); }
+.light-theme .command.f0::before { background-image: url("./img/f0.svg"); }
+.light-theme .command.f1::before { background-image: url("./img/f1.svg"); }
+.light-theme .command.f2::before { background-image: url("./img/f2.svg"); }
+.light-theme .command.f3::before { background-image: url("./img/f3.svg"); }
+.light-theme .command.f4::before { background-image: url("./img/f4.svg"); }
+.light-theme .command.f5::before { background-image: url("./img/f5.svg"); }
+
+/* Light theme function blocks */
+.light-theme .function-block {
+  background-color: rgba(200, 215, 235, 0.6);
+  border-color: rgba(0, 80, 150, 0.25);
+}
+
+.light-theme .function-holder {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 80, 150, 0.15);
+}
+
+.light-theme .commands-area {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 80, 150, 0.15);
+}
+
+.light-theme .game-controls.dragging .function-block:hover {
+  background-color: rgba(0, 149, 168, 0.3);
+  border-color: var(--accent-cyan);
 }
 
 /* ===== BASE STYLES ===== */
@@ -73,11 +174,23 @@ body::before {
   animation: twinkle 8s ease-in-out infinite alternate;
   pointer-events: none;
   z-index: 0;
+  opacity: var(--star-opacity, 1);
+  transition: opacity 0.5s ease;
 }
 
 @keyframes twinkle {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
+}
+
+/* Light theme background override */
+.light-theme body,
+body.light-theme {
+  background: var(--bg-primary);
+  background-image: 
+    radial-gradient(ellipse at 20% 20%, rgba(0, 149, 168, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(196, 0, 122, 0.06) 0%, transparent 50%),
+    linear-gradient(135deg, #e8eef6 0%, #f0f4f8 50%, #e0e8f0 100%);
 }
 
 /* ===== MAIN APP LAYOUT ===== */
@@ -739,6 +852,37 @@ button:nth-child(2)::before {
   box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
   border-color: var(--accent-cyan);
   transform: scale(1.1);
+}
+
+/* ===== THEME TOGGLE ===== */
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--border-glow);
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  padding: 0;
+  margin: 0;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 0 20px var(--border-glow);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
 }
 
 /* ===== GITHUB RIBBON STYLING ===== */
