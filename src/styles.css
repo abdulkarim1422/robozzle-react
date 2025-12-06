@@ -204,18 +204,20 @@ body::before {
 /* ===== GAME BOARD HOLDER ===== */
 .gameboard-holder {
   flex: 1;
-  max-width: 900px;
   overflow: hidden;
   margin: 20px;
   padding: 20px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 20px;
+  align-items: flex-start;
 }
 
 /* ===== GAME BOARD ===== */
 .gameboard {
-  width: 100%;
-  max-width: 100%;
+  flex: 1;
+  min-width: 400px;
+  max-width: 700px;
   aspect-ratio: 16 / 12;
   border: 2px solid var(--border-glow);
   border-radius: var(--radius-lg);
@@ -348,15 +350,31 @@ body::before {
 .player-controls {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-top: 20px;
+  gap: 12px;
+  width: 280px;
+  min-width: 280px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.player-controls::-webkit-scrollbar {
+  width: 4px;
+}
+
+.player-controls::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.player-controls::-webkit-scrollbar-thumb {
+  background: var(--border-glow);
+  border-radius: 2px;
 }
 
 .game-controls {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .game-controls.dragging .function-block:hover {
@@ -369,8 +387,8 @@ body::before {
 .function-holder {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
+  gap: 8px;
+  padding: 8px 10px;
   background: var(--bg-glass);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
@@ -378,8 +396,8 @@ body::before {
 }
 
 .function-holder img {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   filter: brightness(1.2) drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
 }
 
@@ -387,12 +405,12 @@ body::before {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
 }
 
 .function-block {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   background-color: rgba(15, 22, 41, 0.6);
   border: 2px dashed rgba(136, 180, 255, 0.2);
   border-radius: var(--radius-sm);
@@ -404,8 +422,8 @@ body::before {
   display: inline-flex;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 6px;
-  padding: 12px;
+  gap: 4px;
+  padding: 10px;
   border: 1px solid var(--border-subtle);
   background: var(--bg-glass);
   border-radius: var(--radius-md);
@@ -426,8 +444,8 @@ body::before {
 /* ===== COMMAND BLOCKS ===== */
 .command {
   cursor: grab;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-sm);
   background-position: center;
   background-repeat: no-repeat;
@@ -580,8 +598,7 @@ body::before {
 /* ===== BUTTONS ===== */
 .button-row {
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 6px;
 }
 
 .button-row button {
@@ -590,12 +607,12 @@ body::before {
 
 button {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  padding: 14px 24px;
-  margin: 4px;
+  padding: 10px 16px;
+  margin: 0;
   border: 2px solid var(--accent-cyan);
   border-radius: var(--radius-md);
   background: linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(0, 240, 255, 0.05) 100%);
@@ -653,17 +670,16 @@ button:nth-child(2)::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 12px 16px;
+  gap: 10px;
+  padding: 10px 12px;
   background: var(--bg-glass);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  margin-top: 8px;
 }
 
 .slider-container label {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -673,7 +689,7 @@ button:nth-child(2)::before {
 .speed-slider {
   -webkit-appearance: none;
   appearance: none;
-  width: 200px;
+  flex: 1;
   height: 6px;
   background: var(--bg-tertiary);
   border-radius: 3px;
@@ -732,15 +748,52 @@ button:nth-child(2)::before {
 }
 
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 1400px) {
+  .boards {
+    width: 220px;
+    min-width: 220px;
+  }
+  
+  .player-controls {
+    width: 250px;
+    min-width: 250px;
+  }
+}
+
 @media (max-width: 1200px) {
   .boards {
-    width: 240px;
-    min-width: 240px;
+    width: 200px;
+    min-width: 200px;
   }
   
   .gameboard-holder {
     margin: 15px;
     padding: 15px;
+    flex-direction: column;
+  }
+  
+  .gameboard {
+    max-width: 100%;
+    min-width: unset;
+  }
+  
+  .player-controls {
+    width: 100%;
+    min-width: unset;
+    max-height: unset;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  
+  .game-controls {
+    flex: 1;
+    min-width: 280px;
+  }
+  
+  .commands-area {
+    flex: 1;
+    min-width: 200px;
   }
 }
 
@@ -753,16 +806,21 @@ button:nth-child(2)::before {
     width: 100%;
     min-width: 100%;
     height: auto;
-    max-height: 200px;
+    max-height: 180px;
     border-right: none;
     border-bottom: 1px solid var(--border-subtle);
   }
   
   .boards h1 {
-    padding: 16px;
+    padding: 14px;
+    font-size: 1rem;
   }
   
-  .gameboard-holder {
-    max-width: 100%;
+  .player-controls {
+    flex-direction: column;
+  }
+  
+  .game-controls, .commands-area {
+    min-width: unset;
   }
 }
