@@ -338,12 +338,12 @@ class Game extends Component<GameProps, GameState> {
                 onMouseDown={this.mouseDown}
                 dragging={dragging}
               />
-              <div style={{ display: "flex" }}>
-                <button onClick={this.start} style={{ flex: 1 }}>
-                  Go
+              <div className="button-row">
+                <button onClick={this.start}>
+                  ▶ Go
                 </button>
-                <button onClick={this.reset} style={{ flex: 1 }}>
-                  Reset
+                <button onClick={this.reset}>
+                  ↺ Reset
                 </button>
               </div>
               <div className="slider-container">
