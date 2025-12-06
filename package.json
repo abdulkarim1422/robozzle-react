@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "keywords": [],
-  "homepage": "http://alexanderson1993.github.io/robozzle-react",
+  "homepage": ".",
   "main": "src/index.js",
   "dependencies": {
     "react-dom": "18.3.1",
