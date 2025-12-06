@@ -62,14 +62,26 @@ class Game extends Component<GameProps, GameState> {
     }));
   };
 
-  commandMouseDown = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  getEventPosition = (evt: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent): { x: number; y: number } => {
+    if ('touches' in evt && evt.touches.length > 0) {
+      return { x: evt.touches[0].clientX, y: evt.touches[0].clientY };
+    }
+    if ('changedTouches' in evt && evt.changedTouches.length > 0) {
+      return { x: evt.changedTouches[0].clientX, y: evt.changedTouches[0].clientY };
+    }
+    return { x: (evt as MouseEvent).clientX, y: (evt as MouseEvent).clientY };
+  };
+
+  commandMouseDown = (evt: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) => {
+    evt.preventDefault();
     const target = evt.target as HTMLElement;
     const funcnum: string = target.dataset.funcnum;
     const index: number = parseInt(target.dataset.position, 10);
 
+    const pos = this.getEventPosition(evt);
     const position = {
-      x: evt.clientX - 15,
-      y: evt.clientY - 15
+      x: pos.x - 15,
+      y: pos.y - 15
     };
     this.setState(state => {
       // Check to see if there is a function there.
@@ -78,6 +90,8 @@ class Game extends Component<GameProps, GameState> {
         this.props.setDragging(true);
         document.addEventListener("mousemove", this.mouseMove);
         document.addEventListener("mouseup", this.mouseUp);
+        document.addEventListener("touchmove", this.touchMove, { passive: false });
+        document.addEventListener("touchend", this.touchEnd);
         return {
           ...state,
           dragging: {
@@ -112,7 +126,11 @@ class Game extends Component<GameProps, GameState> {
     });
     document.addEventListener("mousemove", this.mouseMove);
     document.addEventListener("mouseup", this.mouseUp);
+    document.addEventListener("touchmove", this.touchMove, { passive: false });
+    document.addEventListener("touchend", this.touchEnd);
   };
+
+  lastTouchPosition: { x: number; y: number } | null = null;
 
   mouseMove = (evt: MouseEvent) => {
     this.setState(state => ({
@@ -126,10 +144,39 @@ class Game extends Component<GameProps, GameState> {
     }));
   };
 
-  mouseUp = (evt: MouseEvent) => {
+  touchMove = (evt: TouchEvent) => {
+    evt.preventDefault();
+    const pos = this.getEventPosition(evt);
+    
+    if (this.lastTouchPosition) {
+      const movementX = pos.x - this.lastTouchPosition.x;
+      const movementY = pos.y - this.lastTouchPosition.y;
+      
+      this.setState(state => ({
+        dragging: {
+          ...state.dragging,
+          position: {
+            x: state.dragging.position.x + movementX,
+            y: state.dragging.position.y + movementY
+          }
+        }
+      }));
+    }
+    
+    this.lastTouchPosition = pos;
+  };
+
+  cleanupDragListeners = () => {
     document.removeEventListener("mousemove", this.mouseMove);
-    this.props.setDragging(false);
     document.removeEventListener("mouseup", this.mouseUp);
+    document.removeEventListener("touchmove", this.touchMove);
+    document.removeEventListener("touchend", this.touchEnd);
+    this.lastTouchPosition = null;
+  };
+
+  mouseUp = (evt: MouseEvent) => {
+    this.cleanupDragListeners();
+    this.props.setDragging(false);
 
     const target = evt.target as HTMLElement;
     const funcKey: string = target.dataset.funcnum;
@@ -141,6 +188,33 @@ class Game extends Component<GameProps, GameState> {
       if (state.dragging.command) newAction["command"] = state.dragging.command;
       if (state.dragging.color) newAction["color"] = state.dragging.color;
       if (state.dragging.color === "clear") newAction["color"] = null;
+      const func = state.functions[funcKey] || [];
+      func[position] = { ...func[position], ...newAction };
+      return {
+        dragging: null,
+        functions: { ...state.functions, [funcKey]: func }
+      };
+    });
+  };
+
+  touchEnd = (evt: TouchEvent) => {
+    this.cleanupDragListeners();
+    this.props.setDragging(false);
+
+    const pos = this.getEventPosition(evt);
+    const target = document.elementFromPoint(pos.x, pos.y) as HTMLElement;
+    
+    if (!target) return this.setState({ dragging: null });
+    
+    const funcKey: string = target.dataset?.funcnum;
+    const position = parseInt(target.dataset?.position, 10);
+
+    if (!funcKey) return this.setState({ dragging: null });
+    let newAction = { function: funcKey, index: position }
+    this.setState(state => {
+      if (state.dragging?.command) newAction["command"] = state.dragging.command;
+      if (state.dragging?.color) newAction["color"] = state.dragging.color;
+      if (state.dragging?.color === "clear") newAction["color"] = null;
       const func = state.functions[funcKey] || [];
       func[position] = { ...func[position], ...newAction };
       return {

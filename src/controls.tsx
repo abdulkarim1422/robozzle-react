@@ -21,7 +21,7 @@ interface CommandsProps {
   SubLengths: number[],
   dragging: DragInfo,
   functions: any,
-  onMouseDown,
+  onMouseDown: (evt: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) => void,
   currentInstruction: CurrentInstruction,
 }
 
@@ -48,6 +48,7 @@ const Controls = ({ SubLengths, dragging, functions, onMouseDown, currentInstruc
                       data-funcnum={`f${i}`}
                       data-position={fi}
                       onMouseDown={onMouseDown}
+                      onTouchStart={onMouseDown}
                     />
                   ))}
               </div>
