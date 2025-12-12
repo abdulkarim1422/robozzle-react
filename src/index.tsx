@@ -24,12 +24,13 @@ class App extends Component<{}, AppState> {
     // Initial state
     const completedLevels = new Set<number>(JSON.parse(localStorage.getItem('completedLevels') || '[]'));
     const savedTheme = localStorage.getItem('lightTheme') === 'true';
+    const levelFromUrl = this.getSelectedBoardFromUrl();
     this.state = {
-      selectedBoard: this.getSelectedBoardFromUrl() || 285,
+      selectedBoard: levelFromUrl > 0 ? levelFromUrl : null,
       dragging: null,
       completedLevels: completedLevels,
       lightTheme: savedTheme,
-      showInstructions: true,
+      showInstructions: levelFromUrl <= 0,
     };
   }
 
