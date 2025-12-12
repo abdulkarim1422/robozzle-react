@@ -338,6 +338,15 @@ body.light-theme {
   color: var(--text-primary);
 }
 
+.instructions-page[data-lang="ar"] {
+  direction: rtl;
+}
+
+.instructions-page[data-lang="ar"] ul {
+  padding-right: 24px;
+  padding-left: 0;
+}
+
 .instructions-page h2 {
   font-family: var(--font-display);
   font-size: 2.5rem;
@@ -384,44 +393,10 @@ body.light-theme {
   margin: 0 0 12px 0;
 }
 
-.instructions-content p.arabic {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  direction: rtl;
-  text-align: right;
-  margin-bottom: 8px;
-}
-
-.instructions-content p.english {
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  font-style: italic;
-  padding-right: 16px;
-  border-right: 2px solid var(--border-subtle);
-}
-
 .instructions-content ul {
   margin: 0 0 16px 0;
   padding-left: 24px;
   color: var(--text-secondary);
-}
-
-.instructions-content ul.arabic {
-  direction: rtl;
-  text-align: right;
-  padding-right: 24px;
-  padding-left: 0;
-  font-size: 1.05rem;
-  color: var(--text-primary);
-  margin-bottom: 12px;
-}
-
-.instructions-content ul.english {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  padding-left: 40px;
-  opacity: 0.85;
 }
 
 .instructions-content li {
@@ -449,18 +424,7 @@ body.light-theme {
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin: 0 0 8px 0;
-}
-
-.instructions-content section.cta p.arabic {
-  font-size: 1.3rem;
-  margin-bottom: 8px;
-}
-
-.instructions-content section.cta p.english {
-  font-size: 1rem;
-  border: none;
-  padding: 0;
+  margin: 0;
 }
 
 /* ===== GAME BOARD HOLDER ===== */
@@ -1031,6 +995,40 @@ button:nth-child(2)::before {
 }
 
 .theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.language-toggle {
+  position: fixed;
+  top: 16px;
+  right: 70px;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--border-glow);
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--accent-cyan);
+  transition: all 0.3s ease;
+  padding: 0;
+  margin: 0;
+}
+
+.language-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px var(--border-glow);
+  background: var(--bg-tertiary);
+}
+
+.language-toggle:active {
   transform: scale(0.95);
 }
 

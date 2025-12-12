@@ -13,6 +13,7 @@ interface AppState {
   completedLevels: Set<number>,
   lightTheme: boolean,
   showInstructions: boolean,
+  language: 'ar' | 'en',
 }
 
 
@@ -24,6 +25,7 @@ class App extends Component<{}, AppState> {
     // Initial state
     const completedLevels = new Set<number>(JSON.parse(localStorage.getItem('completedLevels') || '[]'));
     const savedTheme = localStorage.getItem('lightTheme') === 'true';
+    const savedLanguage = (localStorage.getItem('language') || 'ar') as 'ar' | 'en';
     const levelFromUrl = this.getSelectedBoardFromUrl();
     this.state = {
       selectedBoard: levelFromUrl > 0 ? levelFromUrl : null,
@@ -31,6 +33,7 @@ class App extends Component<{}, AppState> {
       completedLevels: completedLevels,
       lightTheme: savedTheme,
       showInstructions: levelFromUrl <= 0,
+      language: savedLanguage,
     };
   }
 
@@ -51,6 +54,14 @@ class App extends Component<{}, AppState> {
         document.body.classList.remove('light-theme');
       }
       return { lightTheme: newTheme };
+    });
+  };
+
+  toggleLanguage = () => {
+    this.setState(prevState => {
+      const newLanguage = prevState.language === 'ar' ? 'en' : 'ar';
+      localStorage.setItem('language', newLanguage);
+      return { language: newLanguage };
     });
   };
 
@@ -84,7 +95,7 @@ class App extends Component<{}, AppState> {
   }
 
   render() {
-    const { dragging, selectedBoard, completedLevels, lightTheme, showInstructions } = this.state;
+    const { dragging, selectedBoard, completedLevels, lightTheme, showInstructions, language } = this.state;
     return (
       <div className={`App ${dragging ? "dragging" : ""}`}>
         <button 
@@ -93,6 +104,13 @@ class App extends Component<{}, AppState> {
           title={lightTheme ? "Switch to dark theme" : "Switch to light theme"}
         >
           {lightTheme ? "🌙" : "☀️"}
+        </button>
+        <button 
+          className="language-toggle" 
+          onClick={this.toggleLanguage}
+          title={language === 'ar' ? "Switch to English" : "التبديل إلى العربية"}
+        >
+          {language === 'ar' ? "EN" : "ع"}
         </button>
         <GitHubForkRibbon
           href="//github.com/alexanderson1993/robozzle-react"
@@ -131,82 +149,93 @@ class App extends Component<{}, AppState> {
           ))}
         </div>
         {showInstructions && !selectedBoard ? (
-          <div className="instructions-page">
-            <h2>🤖 مرحباً بك في روبوزل!</h2>
+          <div className="instructions-page" data-lang={language}>
+            <h2>{language === 'ar' ? '🤖 مرحباً بك في روبوزل!' : '🤖 Welcome to Robozzle!'}</h2>
             <div className="instructions-content">
               <section>
-                <h3>🎯 الهدف</h3>
-                <p className="arabic">قم بتوجيه الروبوت لجمع كل النجوم على اللوحة باستخدام الدوال المبرمجة.</p>
-                <p className="english">Guide the robot to collect all the stars on the board using programmed functions.</p>
+                <h3>{language === 'ar' ? '🎯 الهدف' : '🎯 Goal'}</h3>
+                {language === 'ar' ? (
+                  <p>قم بتوجيه الروبوت لجمع كل النجوم على اللوحة باستخدام الدوال المبرمجة.</p>
+                ) : (
+                  <p>Guide the robot to collect all the stars on the board using programmed functions.</p>
+                )}
               </section>
               
               <section>
-                <h3>🎮 كيفية اللعب</h3>
-                <ul className="arabic">
-                  <li><strong>برمجة الدوال:</strong> اسحب وأفلت الأوامر في خانات الدوال (F1, F2, إلخ)</li>
-                  <li><strong>الأوامر المتاحة:</strong>
-                    <ul>
-                      <li>⬆️ <strong>تقدم للأمام</strong> - التحرك خطوة واحدة للأمام</li>
-                      <li>↩️ <strong>انعطف يساراً</strong> - الدوران 90° عكس عقارب الساعة</li>
-                      <li>↪️ <strong>انعطف يميناً</strong> - الدوران 90° مع عقارب الساعة</li>
-                      <li>🔵🟢🔴 <strong>تلوين</strong> - تلوين المربع الحالي</li>
-                      <li><strong>استدعاء F1/F2/F3/F4/F5</strong> - تنفيذ دالة أخرى</li>
-                    </ul>
-                  </li>
-                  <li><strong>التنفيذ الشرطي:</strong> يمكن ضبط الأوامر لتنفيذها فقط على المربعات الملونة المحددة</li>
-                  <li><strong>تشغيل البرنامج:</strong> انقر على زر التشغيل لاختبار الحل الخاص بك</li>
-                </ul>
-                <ul className="english">
-                  <li><strong>Program Functions:</strong> Drag and drop commands into the function slots (F1, F2, etc.)</li>
-                  <li><strong>Available Commands:</strong>
-                    <ul>
-                      <li>⬆️ <strong>Forward</strong> - Move one step forward</li>
-                      <li>↩️ <strong>Turn Left</strong> - Rotate 90° counterclockwise</li>
-                      <li>↪️ <strong>Turn Right</strong> - Rotate 90° clockwise</li>
-                      <li>🔵🟢🔴 <strong>Paint</strong> - Paint the current tile</li>
-                      <li><strong>Call F1/F2/F3/F4/F5</strong> - Execute another function</li>
-                    </ul>
-                  </li>
-                  <li><strong>Conditional Execution:</strong> Commands can be set to execute only on specific colored tiles</li>
-                  <li><strong>Run Your Program:</strong> Click the play button to test your solution</li>
-                </ul>
+                <h3>{language === 'ar' ? '🎮 كيفية اللعب' : '🎮 How to Play'}</h3>
+                {language === 'ar' ? (
+                  <ul>
+                    <li><strong>برمجة الدوال:</strong> اسحب وأفلت الأوامر في خانات الدوال (F1, F2, إلخ)</li>
+                    <li><strong>الأوامر المتاحة:</strong>
+                      <ul>
+                        <li>⬆️ <strong>تقدم للأمام</strong> - التحرك خطوة واحدة للأمام</li>
+                        <li>↩️ <strong>انعطف يساراً</strong> - الدوران 90° عكس عقارب الساعة</li>
+                        <li>↪️ <strong>انعطف يميناً</strong> - الدوران 90° مع عقارب الساعة</li>
+                        <li>🔵🟢🔴 <strong>تلوين</strong> - تلوين المربع الحالي</li>
+                        <li><strong>استدعاء F1/F2/F3/F4/F5</strong> - تنفيذ دالة أخرى</li>
+                      </ul>
+                    </li>
+                    <li><strong>التنفيذ الشرطي:</strong> يمكن ضبط الأوامر لتنفيذها فقط على المربعات الملونة المحددة</li>
+                    <li><strong>تشغيل البرنامج:</strong> انقر على زر التشغيل لاختبار الحل الخاص بك</li>
+                  </ul>
+                ) : (
+                  <ul>
+                    <li><strong>Program Functions:</strong> Drag and drop commands into the function slots (F1, F2, etc.)</li>
+                    <li><strong>Available Commands:</strong>
+                      <ul>
+                        <li>⬆️ <strong>Forward</strong> - Move one step forward</li>
+                        <li>↩️ <strong>Turn Left</strong> - Rotate 90° counterclockwise</li>
+                        <li>↪️ <strong>Turn Right</strong> - Rotate 90° clockwise</li>
+                        <li>🔵🟢🔴 <strong>Paint</strong> - Paint the current tile</li>
+                        <li><strong>Call F1/F2/F3/F4/F5</strong> - Execute another function</li>
+                      </ul>
+                    </li>
+                    <li><strong>Conditional Execution:</strong> Commands can be set to execute only on specific colored tiles</li>
+                    <li><strong>Run Your Program:</strong> Click the play button to test your solution</li>
+                  </ul>
+                )}
               </section>
               
               <section>
-                <h3>💡 نصائح</h3>
-                <ul className="arabic">
-                  <li>ابدأ بحركات بسيطة وزد التعقيد تدريجياً</li>
-                  <li>استخدم الدوال بشكل تكراري لإنشاء حلقات</li>
-                  <li>انتبه للعدد المحدود من خانات الأوامر</li>
-                  <li>الشروط الملونة تساعدك في إنشاء منطق متفرع</li>
-                </ul>
-                <ul className="english">
-                  <li>Start with simple movements and build up complexity</li>
-                  <li>Use functions recursively to create loops</li>
-                  <li>Pay attention to the limited number of command slots</li>
-                  <li>Colored conditions help you create branching logic</li>
-                </ul>
+                <h3>{language === 'ar' ? '💡 نصائح' : '💡 Tips'}</h3>
+                {language === 'ar' ? (
+                  <ul>
+                    <li>ابدأ بحركات بسيطة وزد التعقيد تدريجياً</li>
+                    <li>استخدم الدوال بشكل تكراري لإنشاء حلقات</li>
+                    <li>انتبه للعدد المحدود من خانات الأوامر</li>
+                    <li>الشروط الملونة تساعدك في إنشاء منطق متفرع</li>
+                  </ul>
+                ) : (
+                  <ul>
+                    <li>Start with simple movements and build up complexity</li>
+                    <li>Use functions recursively to create loops</li>
+                    <li>Pay attention to the limited number of command slots</li>
+                    <li>Colored conditions help you create branching logic</li>
+                  </ul>
+                )}
               </section>
               
               <section>
-                <h3>🎨 التحكم</h3>
-                <ul className="arabic">
-                  <li><strong>السحب والإفلات:</strong> انقر واسحب الأوامر من اللوحة إلى خانات الدوال</li>
-                  <li><strong>إزالة الأوامر:</strong> انقر على أمر للتنقل بين الخيارات أو إزالته</li>
-                  <li><strong>التحكم في السرعة:</strong> اضبط سرعة التنفيذ باستخدام شريط التمرير</li>
-                  <li><strong>إعادة التعيين:</strong> امسح اللوحة وابدأ من جديد</li>
-                </ul>
-                <ul className="english">
-                  <li><strong>Drag & Drop:</strong> Click and drag commands from the palette to function slots</li>
-                  <li><strong>Remove Commands:</strong> Click on a command to cycle through options or remove it</li>
-                  <li><strong>Speed Control:</strong> Adjust execution speed with the slider</li>
-                  <li><strong>Reset:</strong> Clear the board and start over</li>
-                </ul>
+                <h3>{language === 'ar' ? '🎨 التحكم' : '🎨 Controls'}</h3>
+                {language === 'ar' ? (
+                  <ul>
+                    <li><strong>السحب والإفلات:</strong> انقر واسحب الأوامر من اللوحة إلى خانات الدوال</li>
+                    <li><strong>إزالة الأوامر:</strong> انقر على أمر للتنقل بين الخيارات أو إزالته</li>
+                    <li><strong>التحكم في السرعة:</strong> اضبط سرعة التنفيذ باستخدام شريط التمرير</li>
+                    <li><strong>إعادة التعيين:</strong> امسح اللوحة وابدأ من جديد</li>
+                  </ul>
+                ) : (
+                  <ul>
+                    <li><strong>Drag & Drop:</strong> Click and drag commands from the palette to function slots</li>
+                    <li><strong>Remove Commands:</strong> Click on a command to cycle through options or remove it</li>
+                    <li><strong>Speed Control:</strong> Adjust execution speed with the slider</li>
+                    <li><strong>Reset:</strong> Clear the board and start over</li>
+                  </ul>
+                )}
               </section>
               
               <section className="cta">
-                <p className="arabic">هل أنت مستعد للبدء؟ اختر مستوى من الشريط الجانبي لتبدأ!</p>
-                <p className="english">Ready to start? Select a level from the sidebar to begin!</p>
+                <p>{language === 'ar' ? 'هل أنت مستعد للبدء؟ اختر مستوى من الشريط الجانبي لتبدأ!' : 'Ready to start? Select a level from the sidebar to begin!'}</p>
               </section>
             </div>
           </div>
