@@ -9,6 +9,59 @@ function replaceAt(string: string, index: number, replace: string): string {
   return string.substring(0, index) + replace + string.substring(index + 1);
 }
 
+// Tutorial solutions for auto-solve feature
+const TUTORIAL_SOLUTIONS: { [key: string]: FunctionCommands } = {
+  "Tutorial: Part 1": {
+    f0: [
+      { command: "forward", color: null, function: "f0", index: 0 },
+      { command: "forward", color: null, function: "f0", index: 1 },
+      { command: "left", color: null, function: "f0", index: 2 },
+      { command: "left", color: null, function: "f0", index: 3 },
+      { command: "forward", color: null, function: "f0", index: 4 },
+      { command: "forward", color: null, function: "f0", index: 5 },
+      { command: "forward", color: null, function: "f0", index: 6 },
+      { command: "forward", color: null, function: "f0", index: 7 },
+      { command: "forward", color: null, function: "f0", index: 8 },
+    ]
+  },
+  "Tutorial: Part 2": {
+    f0: [
+      { command: "forward", color: null, function: "f0", index: 0 },
+      { command: "forward", color: null, function: "f0", index: 1 },
+      { command: "left", color: null, function: "f0", index: 2 },
+      { command: "left", color: null, function: "f0", index: 3 },
+      { command: "f1", color: null, function: "f0", index: 4 },
+    ],
+    f1: [
+      { command: "forward", color: null, function: "f1", index: 0 },
+      { command: "f1", color: null, function: "f1", index: 1 },
+    ]
+  },
+  "Tutorial: Part 3": {
+    f0: [
+      { command: "forward", color: null, function: "f0", index: 0 },
+      { command: "f0", color: null, function: "f0", index: 1 },
+    ]
+  },
+  "Tutorial: Part 4": {
+    f0: [
+      { command: "forward", color: null, function: "f0", index: 0 },
+      { command: "right", color: "blue", function: "f0", index: 1 },
+      { command: "f0", color: null, function: "f0", index: 2 },
+    ]
+  },
+  "Tutorial: Part 5": {
+    f0: [
+      { command: "forward", color: "blue", function: "f0", index: 0 },
+      { command: "left", color: "green", function: "f0", index: 1 },
+      { command: "left", color: "red", function: "f0", index: 2 },
+      { command: "left", color: "red", function: "f0", index: 3 },
+      { command: "paint-blue", color: null, function: "f0", index: 4 },
+      { command: "f0", color: null, function: "f0", index: 5 },
+    ]
+  }
+};
+
 
 // Step speed is a scale from 1-10, where 10 is the fastest (almost instant)
 const INTIAL_STEP_SPEED = 8;
@@ -236,6 +289,15 @@ class Game extends Component<GameProps, GameState> {
     setTimeout(this.runStack, this.state.stepDelay);
   };
 
+  autoSolve = () => {
+    const solution = TUTORIAL_SOLUTIONS[this.state.Title];
+    if (solution) {
+      this.setState({ functions: solution }, () => {
+        this.start();
+      });
+    }
+  };
+
   runStack = () => {
     this.setState(state => {
       const { stack, Colors, RobotRow, RobotCol } = state;
@@ -438,6 +500,13 @@ class Game extends Component<GameProps, GameState> {
                 />
                 <label htmlFor="speed">Fast</label>
               </div>
+              {TUTORIAL_SOLUTIONS[this.state.Title] && (
+                <div className="button-row">
+                  <button onClick={this.autoSolve}>
+                    ✨ Auto Solve
+                  </button>
+                </div>
+              )}
               <div className="controls-qr">
                 <div className="qr-code-wrapper">
                   <QRCodeSVG 
