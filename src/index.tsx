@@ -132,16 +132,31 @@ class App extends Component<{}, AppState> {
         </div>
         {showInstructions && !selectedBoard ? (
           <div className="instructions-page">
-            <h2>🤖 Welcome to Robozzle!</h2>
+            <h2>🤖 مرحباً بك في روبوزل!</h2>
             <div className="instructions-content">
               <section>
-                <h3>🎯 Goal</h3>
-                <p>Guide the robot to collect all the stars on the board using programmed functions.</p>
+                <h3>🎯 الهدف</h3>
+                <p className="arabic">قم بتوجيه الروبوت لجمع كل النجوم على اللوحة باستخدام الدوال المبرمجة.</p>
+                <p className="english">Guide the robot to collect all the stars on the board using programmed functions.</p>
               </section>
               
               <section>
-                <h3>🎮 How to Play</h3>
-                <ul>
+                <h3>🎮 كيفية اللعب</h3>
+                <ul className="arabic">
+                  <li><strong>برمجة الدوال:</strong> اسحب وأفلت الأوامر في خانات الدوال (F1, F2, إلخ)</li>
+                  <li><strong>الأوامر المتاحة:</strong>
+                    <ul>
+                      <li>⬆️ <strong>تقدم للأمام</strong> - التحرك خطوة واحدة للأمام</li>
+                      <li>↩️ <strong>انعطف يساراً</strong> - الدوران 90° عكس عقارب الساعة</li>
+                      <li>↪️ <strong>انعطف يميناً</strong> - الدوران 90° مع عقارب الساعة</li>
+                      <li>🔵🟢🔴 <strong>تلوين</strong> - تلوين المربع الحالي</li>
+                      <li><strong>استدعاء F1/F2/F3/F4/F5</strong> - تنفيذ دالة أخرى</li>
+                    </ul>
+                  </li>
+                  <li><strong>التنفيذ الشرطي:</strong> يمكن ضبط الأوامر لتنفيذها فقط على المربعات الملونة المحددة</li>
+                  <li><strong>تشغيل البرنامج:</strong> انقر على زر التشغيل لاختبار الحل الخاص بك</li>
+                </ul>
+                <ul className="english">
                   <li><strong>Program Functions:</strong> Drag and drop commands into the function slots (F1, F2, etc.)</li>
                   <li><strong>Available Commands:</strong>
                     <ul>
@@ -158,8 +173,14 @@ class App extends Component<{}, AppState> {
               </section>
               
               <section>
-                <h3>💡 Tips</h3>
-                <ul>
+                <h3>💡 نصائح</h3>
+                <ul className="arabic">
+                  <li>ابدأ بحركات بسيطة وزد التعقيد تدريجياً</li>
+                  <li>استخدم الدوال بشكل تكراري لإنشاء حلقات</li>
+                  <li>انتبه للعدد المحدود من خانات الأوامر</li>
+                  <li>الشروط الملونة تساعدك في إنشاء منطق متفرع</li>
+                </ul>
+                <ul className="english">
                   <li>Start with simple movements and build up complexity</li>
                   <li>Use functions recursively to create loops</li>
                   <li>Pay attention to the limited number of command slots</li>
@@ -168,8 +189,14 @@ class App extends Component<{}, AppState> {
               </section>
               
               <section>
-                <h3>🎨 Controls</h3>
-                <ul>
+                <h3>🎨 التحكم</h3>
+                <ul className="arabic">
+                  <li><strong>السحب والإفلات:</strong> انقر واسحب الأوامر من اللوحة إلى خانات الدوال</li>
+                  <li><strong>إزالة الأوامر:</strong> انقر على أمر للتنقل بين الخيارات أو إزالته</li>
+                  <li><strong>التحكم في السرعة:</strong> اضبط سرعة التنفيذ باستخدام شريط التمرير</li>
+                  <li><strong>إعادة التعيين:</strong> امسح اللوحة وابدأ من جديد</li>
+                </ul>
+                <ul className="english">
                   <li><strong>Drag & Drop:</strong> Click and drag commands from the palette to function slots</li>
                   <li><strong>Remove Commands:</strong> Click on a command to cycle through options or remove it</li>
                   <li><strong>Speed Control:</strong> Adjust execution speed with the slider</li>
@@ -178,7 +205,8 @@ class App extends Component<{}, AppState> {
               </section>
               
               <section className="cta">
-                <p>Ready to start? Select a level from the sidebar to begin!</p>
+                <p className="arabic">هل أنت مستعد للبدء؟ اختر مستوى من الشريط الجانبي لتبدأ!</p>
+                <p className="english">Ready to start? Select a level from the sidebar to begin!</p>
               </section>
             </div>
           </div>
