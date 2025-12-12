@@ -239,6 +239,18 @@ class App extends Component<{}, AppState> {
               <section className="cta">
                 <p>{language === 'ar' ? 'هل أنت مستعد للبدء؟ اختر مستوى من الشريط الجانبي لتبدأ!' : 'Ready to start? Select a level from the sidebar to begin!'}</p>
               </section>
+              
+              <section className="instructions-qr">
+                <h3>{language === 'ar' ? 'امسح للحفظ' : 'Scan to Save'}</h3>
+                <div className="qr-code-wrapper">
+                  <QRCodeSVG 
+                    value={currentUrl} 
+                    size={200}
+                    level="H"
+                    includeMargin={true}
+                  />
+                </div>
+              </section>
             </div>
           </div>
         ) : selectedBoard && (

@@ -427,6 +427,31 @@ body.light-theme {
   margin: 0;
 }
 
+.instructions-content section.instructions-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  padding: 32px;
+}
+
+.instructions-content section.instructions-qr h3 {
+  color: var(--accent-cyan);
+  text-shadow: var(--glow-strength) var(--accent-cyan);
+  margin: 0;
+}
+
+.instructions-content section.instructions-qr .qr-code-wrapper {
+  background: white;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ===== GAME BOARD HOLDER ===== */
 .gameboard-holder {
   flex: 1;
