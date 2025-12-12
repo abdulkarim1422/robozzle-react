@@ -6,6 +6,7 @@
   "homepage": ".",
   "main": "src/index.js",
   "dependencies": {
+    "qrcode.react": "^4.2.0",
     "react-dom": "18.3.1",
     "react-github-fork-ribbon": "^0.7.0"
   },

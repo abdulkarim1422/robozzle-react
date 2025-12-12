@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import GitHubForkRibbon from "react-github-fork-ribbon";
+import { QRCodeSVG } from "qrcode.react";
 
 import "./styles.css";
 import Boards from "./data";
@@ -96,6 +97,7 @@ class App extends Component<{}, AppState> {
 
   render() {
     const { dragging, selectedBoard, completedLevels, lightTheme, showInstructions, language } = this.state;
+    const currentUrl = window.location.href;
     return (
       <div className={`App ${dragging ? "dragging" : ""}`}>
         <button 

@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import GameBoard from "./gameboard";
 import Controls from "./controls";
 import Commands from "./commands";
@@ -436,6 +437,16 @@ class Game extends Component<GameProps, GameState> {
                   }}
                 />
                 <label htmlFor="speed">Fast</label>
+              </div>
+              <div className="controls-qr">
+                <div className="qr-code-wrapper">
+                  <QRCodeSVG 
+                    value={window.location.href} 
+                    size={200}
+                    level="H"
+                    includeMargin={true}
+                  />
+                </div>
               </div>
             </div>
           </Fragment>
