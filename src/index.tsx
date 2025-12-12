@@ -131,7 +131,7 @@ class App extends Component<{}, AppState> {
               window.history.pushState({ path: url.toString() }, '', url.toString());
             }}
           >
-            📖 How to Play
+            {language === 'ar' ? '📖 كيفية اللعب' : '📖 How to Play'}
           </p>
           {Boards.map(d => (
             <p
