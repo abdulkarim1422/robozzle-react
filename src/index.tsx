@@ -113,7 +113,7 @@ class App extends Component<{}, AppState> {
           {language === 'ar' ? "EN" : "ع"}
         </button>
         <GitHubForkRibbon
-          href="//github.com/alexanderson1993/robozzle-react"
+          href="//github.com/ibtikar-org-tr/robozzle-react"
           target="_blank"
           position="left-bottom"
           color="black"
