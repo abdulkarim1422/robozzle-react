@@ -970,7 +970,7 @@ button:nth-child(2)::before {
 /* ===== THEME TOGGLE ===== */
 .theme-toggle {
   position: fixed;
-  top: 16px;
+  bottom: 16px;
   right: 16px;
   z-index: 100;
   width: 44px;
@@ -1000,7 +1000,7 @@ button:nth-child(2)::before {
 
 .language-toggle {
   position: fixed;
-  top: 16px;
+  bottom: 16px;
   right: 70px;
   z-index: 100;
   width: 44px;
